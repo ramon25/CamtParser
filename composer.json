@@ -1,0 +1,19 @@
+{
+  "name": "ongoing/camtparser",
+  "description": "Library to parse camt.054 files",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Ramon Rainer",
+    }
+  ],
+  "require": {
+    "php": "^7.0"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "Ongoing\\CamtParser\\": ""
+    }
+  }
+}
