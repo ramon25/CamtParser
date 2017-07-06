@@ -25,6 +25,9 @@ class Model
     /** @var Address|SimpleAddress */
     private $address;
 
+    /** @var float */
+    private $charges;
+
     /**
      * @return mixed
      */
@@ -103,6 +106,22 @@ class Model
     public function setAddress($address)
     {
         $this->address = $address;
+    }
+
+    /**
+     * @return float
+     */
+    public function getCharges()
+    {
+        return $this->charges;
+    }
+
+    /**
+     * @param float $charges
+     */
+    public function setCharges($charges)
+    {
+        $this->charges = $charges;
     }
 
 }

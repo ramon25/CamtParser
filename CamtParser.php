@@ -51,6 +51,7 @@ class CamtParser
         $model->setAmount((float)$record->Amt);
         $model->setReferenceNumber((string)$record->RmtInf->Strd->CdtrRefInf->Ref);
         $model->setDatetime(new \DateTime((string)$record->RltdDts->AccptncDtTm));
+        $model->setCharges((float)$record->Chrgs->TtlChrgsAndTaxAmt);
 
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {
             $model->setAddress($this->parseAddress($record->RltdPties->Dbtr->PstlAdr));
