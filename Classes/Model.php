@@ -28,6 +28,9 @@ class Model
     /** @var float */
     private $charges;
 
+    /** @var string */
+    private $account;
+
     /**
      * @return mixed
      */
@@ -122,6 +125,22 @@ class Model
     public function setCharges($charges)
     {
         $this->charges = $charges;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccount()
+    {
+        return $this->account;
+    }
+
+    /**
+     * @param string $account
+     */
+    public function setAccount($account)
+    {
+        $this->account = $account;
     }
 
 }

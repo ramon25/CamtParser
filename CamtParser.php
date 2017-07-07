@@ -33,9 +33,11 @@ class CamtParser
     public function parse() {
         $file = simplexml_load_file($this->xmlPath);
 
+        $account = (string)$file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry->NtryRef;
+
         /** @var SimpleXMLElement $txDtl */
         foreach ($file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry->NtryDtls->TxDtls as $txDtl) {
-            $this->data[] = $this->parseRecord($txDtl);
+            $this->data[] = $this->parseRecord($txDtl, $account);
         }
 
         return $this->data;
@@ -45,13 +47,14 @@ class CamtParser
      * @param SimpleXMLElement $record
      * @return Model
      */
-    private function parseRecord(SimpleXMLElement $record) {
+    private function parseRecord(SimpleXMLElement $record, $account) {
         $model = new Model();
         $model->setCurrency((string)$record->Amt['Ccy']);
         $model->setAmount((float)$record->Amt);
         $model->setReferenceNumber((string)$record->RmtInf->Strd->CdtrRefInf->Ref);
         $model->setDatetime(new \DateTime((string)$record->RltdDts->AccptncDtTm));
         $model->setCharges((float)$record->Chrgs->TtlChrgsAndTaxAmt);
+        $model->setAccount($account);
 
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {
             $model->setAddress($this->parseAddress($record->RltdPties->Dbtr->PstlAdr));
@@ -60,6 +63,10 @@ class CamtParser
         return $model;
     }
 
+    /**
+     * @param SimpleXMLElement $addressBlock
+     * @return Address|SimpleAddress
+     */
     private function parseAddress(SimpleXMLElement $addressBlock) {
         if (isset($addressBlock->AdrLine)) {
             $address = new SimpleAddress();
