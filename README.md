@@ -6,11 +6,11 @@ A PHP Library to parse Camt.054 Files.
 Add the repository to your `composer.json`
 ```
 "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/ramon25/CamtParser"
-        }
-    ]
+    {
+        "type": "vcs",
+        "url": "https://github.com/ramon25/CamtParser"
+    }
+]
 ```
 Add the library to your project using composer
 ```

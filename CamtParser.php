@@ -3,8 +3,10 @@
 namespace Ongoing\CamtParser;
 
 use Ongoing\CamtParser\Classes\Address;
-use Ongoing\CamtParser\Classes\Model;
+use Ongoing\CamtParser\Classes\Entry;
 use Ongoing\CamtParser\Classes\SimpleAddress;
+use Ongoing\CamtParser\Classes\Transaction;
+use Ongoing\CamtParser\Classes\TransactionCode;
 use \SimpleXMLElement;
 
 /**
@@ -38,35 +40,68 @@ class CamtParser
 
         /**
          * Parse each transaction record
-         * @var SimpleXMLElement $txDtl
          */
-        foreach ($file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry->NtryDtls->TxDtls as $txDtl) {
-            $this->data[] = $this->parseRecord($txDtl, $account);
+        foreach ($file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry as $entry) {
+            $this->data[] = $this->parseEntry($entry, $account);
         }
 
         return $this->data;
     }
 
     /**
-     * @param SimpleXMLElement $record
-     * @return Model
+     * @param SimpleXMLElement $entry
+     * @param $account
+     * @return Entry
      */
-    private function parseRecord(SimpleXMLElement $record, $account) {
-        $model = new Model();
-        $model->setCurrency((string)$record->Amt['Ccy']);
-        $model->setAmount((float)$record->Amt);
-        $model->setReferenceNumber((string)$record->RmtInf->Strd->CdtrRefInf->Ref);
-        $model->setDatetime(new \DateTime((string)$record->RltdDts->AccptncDtTm));
-        $model->setCharges((float)$record->Chrgs->TtlChrgsAndTaxAmt);
-        $model->setAccount($account);
-        $model->setTransactionType((string)$record->CdtDbtInd);
+    private function parseEntry(SimpleXMLElement $entry, $account) {
+        $entryModel = new Entry();
+        $entryModel->setTransactionCode($this->parseTransactionCode($entry->BkTxCd));
+
+        foreach ($entry->NtryDtls->TxDtls as $txDtl) {
+            $entryModel->addTransaction($this->parseTransaction($txDtl, $account));
+        }
+
+        return $entryModel;
+    }
+
+    /**
+     * @param SimpleXMLElement $record
+     * @return Transaction
+     */
+    private function parseTransaction(SimpleXMLElement $transaction, $account) {
+        $transactionModel = new Transaction();
+
+        $transactionModel->setCurrency((string)$transaction->Amt['Ccy']);
+        $transactionModel->setAmount((float)$transaction->Amt);
+        $transactionModel->setReferenceNumber((string)$transaction->RmtInf->Strd->CdtrRefInf->Ref);
+        $transactionModel->setDatetime(new \DateTime((string)$transaction->RltdDts->AccptncDtTm));
+        $transactionModel->setCharges((float)$transaction->Chrgs->TtlChrgsAndTaxAmt);
+        $transactionModel->setAccount($account);
+
+        if ($transaction->BkTxCd) {
+            $transactionModel->setTransactionCode($this->parseTransactionCode($transaction->BkTxCd));
+        }
+
 
         /** parse the senders address */
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {
-            $model->setAddress($this->parseAddress($record->RltdPties->Dbtr->PstlAdr));
+            $transactionModel->setAddress($this->parseAddress($transaction->RltdPties->Dbtr->PstlAdr));
         }
 
-        return $model;
+        return $transactionModel;
+    }
+
+    /**
+     * @param $transactionCode
+     * @return TransactionCode
+     */
+    private function parseTransactionCode($transactionCode) {
+        $transactionCodeModel = new TransactionCode();
+        $transactionCodeModel->setDomain((string)$transactionCode->Domn->Cd);
+        $transactionCodeModel->setFamily((string)$transactionCode->Domn->Fmly->Cd);
+        $transactionCodeModel->setSubfamily((string)$transactionCode->Domn->Fmly->SubFmlyCd);
+
+        return $transactionCodeModel;
     }
 
     /**

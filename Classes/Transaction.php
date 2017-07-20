@@ -2,14 +2,11 @@
 
 namespace Ongoing\CamtParser\Classes;
 
+
 use DateTime;
 
-/**
- * Class Model
- */
-class Model
+class Transaction
 {
-
     /** @var string */
     private $referenceNumber;
 
@@ -31,8 +28,8 @@ class Model
     /** @var string */
     private $account;
 
-    /** @var string */
-    private $transactionType;
+    /** @var TransactionCode */
+    private $transactionCode;
 
     /**
      * @return mixed
@@ -147,19 +144,20 @@ class Model
     }
 
     /**
-     * @return string
+     * @return TransactionCode
      */
-    public function getTransactionType()
+    public function getTransactionCode()
     {
-        return $this->transactionType;
+        return $this->transactionCode;
     }
 
     /**
-     * @param string $transactionType
+     * @param TransactionCode $transactionCode
      */
-    public function setTransactionType($transactionType)
+    public function setTransactionCode(TransactionCode $transactionCode)
     {
-        $this->transactionType = $transactionType;
+        $this->transactionCode = $transactionCode;
     }
+
 
 }
