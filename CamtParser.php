@@ -55,6 +55,7 @@ class CamtParser
         $model->setDatetime(new \DateTime((string)$record->RltdDts->AccptncDtTm));
         $model->setCharges((float)$record->Chrgs->TtlChrgsAndTaxAmt);
         $model->setAccount($account);
+        $model->setTransactionType((string)$record->CdtDbtInd);
 
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {
             $model->setAddress($this->parseAddress($record->RltdPties->Dbtr->PstlAdr));

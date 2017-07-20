@@ -31,6 +31,9 @@ class Model
     /** @var string */
     private $account;
 
+    /** @var string */
+    private $transactionType;
+
     /**
      * @return mixed
      */
@@ -141,6 +144,22 @@ class Model
     public function setAccount($account)
     {
         $this->account = $account;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionType()
+    {
+        return $this->transactionType;
+    }
+
+    /**
+     * @param string $transactionType
+     */
+    public function setTransactionType($transactionType)
+    {
+        $this->transactionType = $transactionType;
     }
 
 }
