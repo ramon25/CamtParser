@@ -28,6 +28,7 @@ class CamtParser
     }
 
     /**
+     * Parse the file set in the constructor
      * @return array
      */
     public function parse() {
@@ -35,7 +36,10 @@ class CamtParser
 
         $account = (string)$file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry->NtryRef;
 
-        /** @var SimpleXMLElement $txDtl */
+        /**
+         * Parse each transaction record
+         * @var SimpleXMLElement $txDtl
+         */
         foreach ($file->BkToCstmrDbtCdtNtfctn->Ntfctn->Ntry->NtryDtls->TxDtls as $txDtl) {
             $this->data[] = $this->parseRecord($txDtl, $account);
         }
@@ -57,6 +61,7 @@ class CamtParser
         $model->setAccount($account);
         $model->setTransactionType((string)$record->CdtDbtInd);
 
+        /** parse the senders address */
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {
             $model->setAddress($this->parseAddress($record->RltdPties->Dbtr->PstlAdr));
         }
@@ -65,6 +70,9 @@ class CamtParser
     }
 
     /**
+     * Parse the address block
+     * It could be a structured address or just multiple lines
+     *
      * @param SimpleXMLElement $addressBlock
      * @return Address|SimpleAddress
      */
