@@ -78,11 +78,11 @@ class CamtParser
         $transactionModel->setCharges((float)$transaction->Chrgs->TtlChrgsAndTaxAmt);
         $transactionModel->setAccount($account);
         $transactionModel->setEntry($entry);
+        $transactionModel->setRejectCode(filter_var((string)$transaction->RmtInf->Strd->AddtlRmtInf, FILTER_SANITIZE_NUMBER_INT));
 
         if ($transaction->BkTxCd) {
             $transactionModel->setTransactionCode($this->parseTransactionCode($transaction->BkTxCd));
         }
-
 
         /** parse the senders address */
         if (isset($record->RltdPties->Dbtr->PstlAdr)) {

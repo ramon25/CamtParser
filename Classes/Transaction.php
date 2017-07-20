@@ -34,6 +34,9 @@ class Transaction
     /** @var Entry */
     private $entry;
 
+    /** @var string */
+    private $rejectCode;
+
     /**
      * @return mixed
      */
@@ -179,6 +182,22 @@ class Transaction
     public function setEntry($entry)
     {
         $this->entry = $entry;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRejectCode()
+    {
+        return $this->rejectCode;
+    }
+
+    /**
+     * @param string $rejectCode
+     */
+    public function setRejectCode($rejectCode)
+    {
+        $this->rejectCode = $rejectCode;
     }
 
 
