@@ -31,6 +31,9 @@ class Transaction
     /** @var TransactionCode */
     private $transactionCode;
 
+    /** @var Entry */
+    private $entry;
+
     /**
      * @return mixed
      */
@@ -148,6 +151,9 @@ class Transaction
      */
     public function getTransactionCode()
     {
+        if (!$this->transactionCode) {
+            return $this->getEntry()->getTransactionCode();
+        }
         return $this->transactionCode;
     }
 
@@ -157,6 +163,22 @@ class Transaction
     public function setTransactionCode(TransactionCode $transactionCode)
     {
         $this->transactionCode = $transactionCode;
+    }
+
+    /**
+     * @return Entry
+     */
+    public function getEntry()
+    {
+        return $this->entry;
+    }
+
+    /**
+     * @param Entry $entry
+     */
+    public function setEntry($entry)
+    {
+        $this->entry = $entry;
     }
 
 

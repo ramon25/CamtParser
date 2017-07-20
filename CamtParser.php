@@ -58,7 +58,7 @@ class CamtParser
         $entryModel->setTransactionCode($this->parseTransactionCode($entry->BkTxCd));
 
         foreach ($entry->NtryDtls->TxDtls as $txDtl) {
-            $entryModel->addTransaction($this->parseTransaction($txDtl, $account));
+            $entryModel->addTransaction($this->parseTransaction($txDtl, $account, $entryModel));
         }
 
         return $entryModel;
@@ -68,7 +68,7 @@ class CamtParser
      * @param SimpleXMLElement $record
      * @return Transaction
      */
-    private function parseTransaction(SimpleXMLElement $transaction, $account) {
+    private function parseTransaction(SimpleXMLElement $transaction, $account, Entry $entry) {
         $transactionModel = new Transaction();
 
         $transactionModel->setCurrency((string)$transaction->Amt['Ccy']);
@@ -77,6 +77,7 @@ class CamtParser
         $transactionModel->setDatetime(new \DateTime((string)$transaction->RltdDts->AccptncDtTm));
         $transactionModel->setCharges((float)$transaction->Chrgs->TtlChrgsAndTaxAmt);
         $transactionModel->setAccount($account);
+        $transactionModel->setEntry($entry);
 
         if ($transaction->BkTxCd) {
             $transactionModel->setTransactionCode($this->parseTransactionCode($transaction->BkTxCd));
