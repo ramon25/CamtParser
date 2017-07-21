@@ -8,6 +8,9 @@ namespace Ongoing\CamtParser\Classes;
  */
 class Entry
 {
+    /**
+     * Entry constructor.
+     */
     public function __construct()
     {
         $this->transactions = [];
@@ -35,6 +38,9 @@ class Entry
         $this->transactions = $transactions;
     }
 
+    /**
+     * @param Transaction $transaction
+     */
     public function addTransaction(Transaction $transaction) {
         $this->transactions[] = $transaction;
     }

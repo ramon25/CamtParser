@@ -65,8 +65,11 @@ class CamtParser
     }
 
     /**
-     * @param SimpleXMLElement $record
+     * @param SimpleXMLElement $transaction
+     * @param $account
+     * @param Entry $entry
      * @return Transaction
+     * @internal param SimpleXMLElement $record
      */
     private function parseTransaction(SimpleXMLElement $transaction, $account, Entry $entry) {
         $transactionModel = new Transaction();
@@ -78,9 +81,14 @@ class CamtParser
         $transactionModel->setCharges((float)$transaction->Chrgs->TtlChrgsAndTaxAmt);
         $transactionModel->setAccount($account);
         $transactionModel->setEntry($entry);
-        $transactionModel->setRejectCode(filter_var((string)$transaction->RmtInf->Strd->AddtlRmtInf, FILTER_SANITIZE_NUMBER_INT));
 
-        if ($transaction->BkTxCd) {
+        /** set reject code if available */
+        if (isset($transaction->RmtInf->Strd->AddtlRmtInf)) {
+            $transactionModel->setRejectCode(str_replace('?REJECT?', '', (string)$transaction->RmtInf->Strd->AddtlRmtInf));
+        }
+
+        /** parse transaction code if available */
+        if (isset($transaction->BkTxCd)) {
             $transactionModel->setTransactionCode($this->parseTransactionCode($transaction->BkTxCd));
         }
 
