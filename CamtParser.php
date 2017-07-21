@@ -57,6 +57,11 @@ class CamtParser
         $entryModel = new Entry();
         $entryModel->setTransactionCode($this->parseTransactionCode($entry->BkTxCd));
 
+        /** set entry reference if available */
+        if (isset($entry->NtryRef)) {
+            $entryModel->setReference((string)$entry->NtryRef);
+        }
+
         foreach ($entry->NtryDtls->TxDtls as $txDtl) {
             $entryModel->addTransaction($this->parseTransaction($txDtl, $account, $entryModel));
         }
@@ -101,6 +106,7 @@ class CamtParser
     }
 
     /**
+     * Parse the transaction code (must on entry, optional on transaction)
      * @param $transactionCode
      * @return TransactionCode
      */

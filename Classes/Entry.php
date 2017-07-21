@@ -22,6 +22,9 @@ class Entry
     /** @var TransactionCode */
     private $transactionCode;
 
+    /** @var string */
+    private $reference;
+
     /**
      * @return array
      */
@@ -59,5 +62,21 @@ class Entry
     public function setTransactionCode(TransactionCode $transactionCode)
     {
         $this->transactionCode = $transactionCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
     }
 }
