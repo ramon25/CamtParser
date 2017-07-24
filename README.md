@@ -8,7 +8,7 @@ Add the repository to your `composer.json`
 "repositories": [
     {
         "type": "vcs",
-        "url": "https://github.com/ramon25/CamtParser"
+        "url": "https://bitbucket.org/ongoing/camt.054-parser"
     }
 ]
 ```
