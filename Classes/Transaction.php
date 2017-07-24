@@ -5,6 +5,10 @@ namespace Ongoing\CamtParser\Classes;
 
 use DateTime;
 
+/**
+ * Class Transaction
+ * @package Ongoing\CamtParser\Classes
+ */
 class Transaction
 {
     /** @var string */
