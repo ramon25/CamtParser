@@ -82,10 +82,14 @@ class CamtParser
         $transactionModel->setCurrency((string)$transaction->Amt['Ccy']);
         $transactionModel->setAmount((float)$transaction->Amt);
         $transactionModel->setReferenceNumber((string)$transaction->RmtInf->Strd->CdtrRefInf->Ref);
-        $transactionModel->setDatetime(new \DateTime((string)$transaction->RltdDts->AccptncDtTm));
         $transactionModel->setCharges((float)$transaction->Chrgs->TtlChrgsAndTaxAmt);
         $transactionModel->setAccount($account);
         $transactionModel->setEntry($entry);
+
+        /** check for transaction datetime */
+        if ($transaction->RltdDts->AccptncDtTm) {
+            $transactionModel->setDatetime(new \DateTime((string)$transaction->RltdDts->AccptncDtTm));
+        }
 
         /** set reject code if available */
         if (isset($transaction->RmtInf->Strd->AddtlRmtInf)) {
