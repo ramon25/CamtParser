@@ -13,7 +13,7 @@ class Entry
      */
     public function __construct()
     {
-        $this->transactions = [];
+        $this->transactions = array();
     }
 
     /** @var array */

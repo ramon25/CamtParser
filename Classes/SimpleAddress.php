@@ -9,7 +9,7 @@ class SimpleAddress
     private $country;
 
     /** @var array */
-    private $lines = [];
+    private $lines = array();
 
     /**
      * @return array
