@@ -101,4 +101,15 @@ class Address
         $this->country = $country;
     }
 
+    /**
+     * string representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode(array_filter(["$this->street $this->streetNumber", "$this->postalCode $this->town", $this->country]), ",");
+    }
+
+
 }

@@ -55,4 +55,14 @@ class SimpleAddress
     {
         $this->country = $country;
     }
+
+    /**
+     * string representation
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return implode($this->getLines(), ", ");
+    }
 }
