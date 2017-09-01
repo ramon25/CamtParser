@@ -102,7 +102,7 @@ class CamtParser
         }
 
         /** parse the senders address */
-        if (isset($record->RltdPties->Dbtr->PstlAdr)) {
+        if (isset($transaction->RltdPties->Dbtr->PstlAdr)) {
             $transactionModel->setAddress($this->parseAddress($transaction->RltdPties->Dbtr->PstlAdr));
         }
 
